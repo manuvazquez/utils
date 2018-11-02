@@ -1,11 +1,13 @@
 import os
 import socket
 import time
+import pathlib
+import typing
 
 import h5py
 
 
-def filename_from_host_and_date():
+def filename_from_host_and_date() -> str:
 
 	"""
 	Returns a string assembled from the host name and current date.
@@ -26,7 +28,7 @@ def filename_from_host_and_date():
 	return hostname + '_' + date + '_' + str(os.getpid())
 
 
-def write_strings_list_into_hdf5(file, path_within_file, strings):
+def write_strings_list_into_hdf5(file, path_within_file: str, strings: typing.List[str]) -> None:
 	"""
 	Writes a list of strings into the given HDF5 file.
 
@@ -47,3 +49,30 @@ def write_strings_list_into_hdf5(file, path_within_file, strings):
 
 		dataset[i] = s
 
+
+def get_auxiliar_file(stem_name: str = '_tmp') -> pathlib.Path:
+	"""
+	Returns an non-existent path that can be used as auxiliar file.
+
+	Parameters
+	----------
+	stem_name : str
+		A tentative name for the auxiliar file
+
+	Returns
+	-------
+	out: Pathlib.Path
+		The path to the auxiliar file
+
+	"""
+
+	# given name is wrapped in a Pathlib object
+	file = pathlib.Path(stem_name)
+
+	# while the file exists...
+	while file.exists():
+
+		# ...a '_' is prepended to the name of the file
+		file = file.with_name('_' + file.name)
+
+	return file
