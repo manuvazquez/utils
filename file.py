@@ -76,3 +76,30 @@ def get_auxiliar_file(stem_name: str = '_tmp') -> pathlib.Path:
 		file = file.with_name('_' + file.name)
 
 	return file
+
+
+def size_of_directory(directory: str, units='bytes') -> typing.Union[int, float]:
+	"""
+	Returns the size of directory. It ignores the size of directories.
+	Credits: derived from https://stackoverflow.com/a/55659577/3967334
+
+	Parameters
+	----------
+	directory : str
+		Path to directory
+	units: str
+		One of `bytes` (default), `kilobytes`, `megabytes`, `gigabytes`
+
+	Returns
+	-------
+	out: int
+		Size
+
+	"""
+
+	# the exponent needed in the denominator when doing the conversion
+	units_conversion_exponent = {'bytes': 0, 'kilobytes': 1, 'megabytes': 2, 'gigabytes': 3}
+
+	size = sum(file.stat().st_size for file in pathlib.Path(directory).rglob('*'))
+
+	return size/1024**units_conversion_exponent[units]
