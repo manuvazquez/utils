@@ -3,6 +3,7 @@ import socket
 import time
 import pathlib
 import typing
+import argparse
 
 import h5py
 
@@ -103,3 +104,19 @@ def size_of_directory(directory: str, units='bytes') -> typing.Union[int, float]
 	size = sum(file.stat().st_size for file in pathlib.Path(directory).rglob('*'))
 
 	return size/1024**units_conversion_exponent[units]
+
+
+# Credits: derived from https://stackoverflow.com/a/11415816/3967334
+# Since it is an `Action`, it should be passed to `action` argument of `add_argument`
+class ReadableDir(argparse.Action):
+
+	def __call__(self, parser, namespace, values, option_string=None):
+
+		prospective_dir = values
+
+		if not os.path.isdir(prospective_dir):
+			raise argparse.ArgumentError(self, f'ReadableDir.__call__: {prospective_dir} is not a valid path')
+		if os.access(prospective_dir, os.R_OK):
+			setattr(namespace, self.dest, prospective_dir)
+		else:
+			raise argparse.ArgumentError(self, f'ReadableDir.__call__: {prospective_dir} is not a readable path')
