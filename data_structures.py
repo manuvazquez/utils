@@ -1,7 +1,10 @@
-# from https://stackoverflow.com/a/20666342/3967334
 def merge_lhs_dict_into_rhs(source: dict, destination: dict) -> dict:
 	"""
-	run me with nosetests --with-doctest file.py
+	Merges the first dictionary into the second one. Whatever is on the left dictionary gets overwritten with values
+	from the right one. If a key is not present on the left `dict` but it is on the right one, it is added.
+	Credits: derived from https://stackoverflow.com/a/20666342/3967334
+
+	# NOTE: run me with nosetests --with-doctest file.py
 
 	>>> a = { 'first' : { 'all_rows' : { 'pass' : 'dog', 'number' : '1' } } }
 	>>> b = { 'first' : { 'all_rows' : { 'fail' : 'cat', 'number' : '5' } } }

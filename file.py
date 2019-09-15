@@ -106,9 +106,13 @@ def size_of_directory(directory: str, units='bytes') -> typing.Union[int, float]
 	return size/1024**units_conversion_exponent[units]
 
 
-# Credits: derived from https://stackoverflow.com/a/11415816/3967334
-# Since it is an `Action`, it should be passed to `action` argument of `add_argument`
 class ReadableDir(argparse.Action):
+	"""
+	Class to pass a directory as command-line argument. Since it inherits from `Action`, it should be passed
+	as `action` argument of `add_argument`.
+	Credits: derived from https://stackoverflow.com/a/11415816/3967334
+
+	"""
 
 	def __call__(self, parser, namespace, values, option_string=None):
 

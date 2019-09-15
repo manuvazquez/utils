@@ -1,8 +1,9 @@
-
-
-# not my implementation but Stackoverflow's agf:
-# https://stackoverflow.com/questions/6760685/creating-a-singleton-in-python/6798042#6798042
 class Singleton(type):
+	"""
+	Implementation of the singleton pattern.
+	Credits: from https://stackoverflow.com/questions/6760685/creating-a-singleton-in-python/6798042#6798042
+
+	"""
 
 	_instances = {}
 
