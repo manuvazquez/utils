@@ -1,8 +1,6 @@
-from typing import List, Union
+from typing import List
 from types import ModuleType
 import inspect
-import pathlib
-import subprocess
 
 
 def get_concrete_classes(module: ModuleType, class_name: str) -> List[str]:
@@ -41,33 +39,3 @@ def get_concrete_classes(module: ModuleType, class_name: str) -> List[str]:
 			module, subclass.__name__)]
 
 	return res
-
-
-def git_commit(path: Union[str, pathlib.Path], error_message: str = 'parent directory is not a repository') -> str:
-	"""
-	Finds the current commit of a git repository.
-
-	Parameters
-	----------
-	path: str or pathlib
-		The path to the git repository.
-	error_message: str
-		Message returned when the above directory is not a git repository.
-
-	Returns
-	-------
-	out: str
-		git commit
-
-	"""
-
-	path = pathlib.Path(path)
-
-	try:
-		git_commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=path, text=True, stderr=subprocess.STDOUT)
-	except subprocess.CalledProcessError:
-		git_commit = error_message
-	else:
-		git_commit = git_commit.rstrip()
-
-	return git_commit
