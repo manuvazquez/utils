@@ -4,9 +4,9 @@ import shutil
 from typing import Union
 
 
-def inkscape_svg_to_pdf(input_file: str, output_file: str) -> None:
+def svg_to_pdf(input_file: str, output_file: str) -> None:
 	"""
-	Converts a svg into a pdf using Inkscape.
+	Converts a svg into a pdf using an external application (e.g., Inkscape).
 
 	Parameters
 	----------
