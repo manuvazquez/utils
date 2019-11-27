@@ -20,6 +20,9 @@ def less_busy_gpu() -> int:
 
 	except pynvml.NVMLError_LibraryNotFound:
 
+		# the module is shut down
+		pynvml.nvmlShutdown()
+
 		raise Exception('No NVIDIA library found')
 
 	n_gpus = pynvml.nvmlDeviceGetCount()
@@ -32,7 +35,7 @@ def less_busy_gpu() -> int:
 		# the free memory in this GPU in MBs
 		free_memory[i_gpu] = pynvml.nvmlDeviceGetMemoryInfo(pynvml.nvmlDeviceGetHandleByIndex(i_gpu)).free / 1024**2
 
-	# the module must be shut down
+	# the module is shut down
 	pynvml.nvmlShutdown()
 
 	return np.argmax(free_memory).item()
