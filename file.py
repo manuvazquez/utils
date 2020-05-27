@@ -3,6 +3,7 @@ import socket
 import time
 import pathlib
 import typing
+from typing import Union
 import argparse
 
 import h5py
@@ -124,3 +125,27 @@ class ReadableDir(argparse.Action):
 			setattr(namespace, self.dest, prospective_dir)
 		else:
 			raise argparse.ArgumentError(self, f'ReadableDir.__call__: {prospective_dir} is not a readable path')
+
+
+def supplement_file_name(file: Union[str, pathlib.Path], supplement: str) -> pathlib.Path:
+	"""
+		Adds a string between the file name in a path and the suffix.
+
+		Parameters
+		----------
+		file : str
+			File name
+		supplement : str
+			String to be added
+
+		Returns
+		-------
+		out: pathlib.Path
+			"Supplemented" file
+
+		"""
+
+	file = pathlib.Path(file)
+
+	# the `suffix` is incorporated into the file name
+	return file.with_name(file.stem + f'_{supplement}' + file.suffix)
