@@ -3,7 +3,7 @@ import socket
 import time
 import pathlib
 import typing
-from typing import Union
+from typing import Union, Optional
 import argparse
 
 import h5py
@@ -129,23 +129,46 @@ class ReadableDir(argparse.Action):
 
 def supplement_file_name(file: Union[str, pathlib.Path], supplement: str) -> pathlib.Path:
 	"""
-		Adds a string between the file name in a path and the suffix.
+	Adds a string between the file name in a path and the suffix.
 
-		Parameters
-		----------
-		file : str
-			File name
-		supplement : str
-			String to be added
+	Parameters
+	----------
+	file : str
+		File name
+	supplement : str
+		String to be added
 
-		Returns
-		-------
-		out: pathlib.Path
-			"Supplemented" file
-
-		"""
+	Returns
+	-------
+	out: pathlib.Path
+		"Supplemented" file
+	"""
 
 	file = pathlib.Path(file)
 
 	# the `suffix` is incorporated into the file name
 	return file.with_name(file.stem + f'_{supplement}' + file.suffix)
+
+
+def transcode_text_file(
+		filename: Union[str, pathlib.Path], new_file: Optional[Union[str, pathlib.Path]] = None,
+		encoding_from: str = 'iso8859_15', encoding_to: str = 'UTF-8') -> pathlib.Path:
+
+	if new_file is None:
+
+		new_file = supplement_file_name(filename, 'utf8')
+
+	else:
+
+		# just in case a string was passed (and since a `pathlib` is "promised" as a return type)
+		new_file = pathlib.Path(new_file)
+
+	with open(filename, 'r', encoding=encoding_from) as fr:
+
+		with open(new_file, 'w', encoding=encoding_to) as fw:
+
+			for line in fr:
+
+				fw.write(line[:-1]+'\r\n')
+
+	return new_file
